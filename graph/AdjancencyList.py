@@ -12,6 +12,8 @@ class AdjacencyList:
     def add_edge(self, v1, v2):
         self.graph[v1].add(v2)
 
+    # TC:
+    # SC:
     def dfs(self):
         visited = set()
         ans = []
@@ -28,6 +30,8 @@ class AdjacencyList:
         traverse(0)
         return ans
 
+    # TC:
+    # SC:
     def bfs(self):
         ans = []
         visited = set({0})
@@ -44,7 +48,23 @@ class AdjacencyList:
         
         return ans
 
+    def connected_component(self):
+        count = 0
+        visited = set()
+        def dfs(v):
+            if v in visited:
+                return
+            visited.add(v)
+            for u in self.graph[v]:
+                if u not in visited:
+                    dfs(u)
 
+        for v in self.graph.copy():
+            if v not in visited:
+                count += 1
+                dfs(v)
+        
+        return count
 
 
 # graph = {'0': set(['1', '2']),
@@ -63,6 +83,14 @@ graph.add_edge(3, 1)
 graph.add_edge(4, 2)
 graph.add_edge(4, 3)
 graph.display()
-print("DFS: " + str(graph.dfs()))
-print("BFS: " + str(graph.bfs()))
+print("DFS: " + str(graph.dfs())) # [0, 1, 3, 4, 2] 
+print("BFS: " + str(graph.bfs())) # [0, 1, 2, 3, 4]
+print("Connected Component: " + str(graph.connected_component())) # 1
+graph.add_edge(5, 6)
+graph.add_edge(5, 7)
+print("Connected Component: " + str(graph.connected_component())) # 2
+graph.add_edge(4, 5)
+print("Connected Component: " + str(graph.connected_component())) # 1
+
+
 
